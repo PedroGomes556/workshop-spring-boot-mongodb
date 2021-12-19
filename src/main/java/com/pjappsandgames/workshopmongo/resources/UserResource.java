@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.pjappsandgames.workshopmongo.domain.Post;
 import com.pjappsandgames.workshopmongo.domain.User;
 import com.pjappsandgames.workshopmongo.dto.UserDTO;
 import com.pjappsandgames.workshopmongo.services.UserService;
@@ -37,7 +38,6 @@ public class UserResource {
 		User obj = service.findById(id);
 		
 		return ResponseEntity.ok().body(new UserDTO(obj));
-		
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
@@ -54,7 +54,6 @@ public class UserResource {
 		service.delete(id);
 		
 		return ResponseEntity.noContent().build();
-		
 	}
 	
 	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
@@ -63,7 +62,15 @@ public class UserResource {
 		obj.setId(id);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
+	}
+
+	@RequestMapping(value="/{id}/posts", method=RequestMethod.GET)
+	public ResponseEntity<List<Post>> findPosts(@PathVariable String id){
+		User obj = service.findById(id);
 		
+		return ResponseEntity.ok().body(obj.getPosts());
 	}
 	
 }
+
+
